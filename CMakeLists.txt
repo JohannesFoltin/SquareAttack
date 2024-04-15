@@ -11,6 +11,9 @@ FetchContent_Declare(SFML
 FetchContent_MakeAvailable(SFML)
 
 add_executable(QuackAttack src/main.cpp)
+
+file(COPY src/textures DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+
 target_link_libraries(QuackAttack PRIVATE sfml-graphics)
 target_compile_features(QuackAttack PRIVATE cxx_std_17)
 

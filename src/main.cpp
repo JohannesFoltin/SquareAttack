@@ -7,24 +7,39 @@
 int main(int argc, char* argv[])
 {
     auto window = sf::RenderWindow{ { 1920u, 1080u }, "QuackAttack" };
+    window.setMouseCursorVisible(false);
     window.setFramerateLimit(144);
 
-    sf::RectangleShape shape(sf::Vector2f(120, 50));
+    // Our speed in pixels per second
+    float speed = 100.f;
 
-    // set the shape color to green
-    shape.setFillColor(sf::Color(100, 250, 50));
+    // Our clock to time frames
+    sf::Clock clock;
+
+    sf::Texture crosshair;
+    crosshair.loadFromFile("textures/Crosshair.png");
+    
+    sf::Sprite crosshairSprite;
+    crosshairSprite.setTexture(crosshair);
+    crosshairSprite.setScale(0.125, 0.125);
 
     sf::Texture texture;
-    if (!texture.loadFromFile("Textures/Duck.png"))
+    if (!texture.loadFromFile("textures/Duck.png"))
     {
         std::cout << "Error";
     }
 
     sf::Sprite sprite;
+
     sprite.setTexture(texture);
+    
+    sprite.setScale(0.2,0.2);
 
     while (window.isOpen())
     {
+        float delta = clock.restart().asSeconds();
+
+
         for (auto event = sf::Event{}; window.pollEvent(event);)
         {
             if (event.type == sf::Event::Closed)
@@ -34,15 +49,18 @@ int main(int argc, char* argv[])
         }
 
         window.clear(sf::Color(250,250,250));
+
         sf::Vector2i localPosition = sf::Mouse::getPosition(window);
 
         if (localPosition.x < 0 || localPosition.y < 0)
         {
         }
 
-        shape.setPosition(localPosition.x-10,localPosition.y-10);
+        crosshairSprite.setPosition(localPosition.x-38,localPosition.y);
+
+        sprite.move(speed * delta, 0.f);
         window.draw(sprite);
-        window.draw(shape);
+        window.draw(crosshairSprite);
         window.display();
     }
 
