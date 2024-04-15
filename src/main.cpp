@@ -57,7 +57,6 @@ int main(int argc, char* argv[])
         }
 
         crosshairSprite.setPosition(localPosition.x-38,localPosition.y);
-
         sprite.move(speed * delta, 0.f);
         window.draw(sprite);
         window.draw(crosshairSprite);
