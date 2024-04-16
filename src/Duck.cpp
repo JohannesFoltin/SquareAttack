@@ -1,11 +1,13 @@
 #include "Duck.h"
 #include <iostream>
 
-Duck::Duck(int speed,sf::Vector2u screen):sprite(_sprite)
+Duck::Duck(int speed, sf::Vector2f startPoint, sf::Vector2f direction):sprite(_sprite)
 {
 	this->_speed = speed;
-	this->_screenSize = screen;
-	this->_angle = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 180));
+    this->_direction = direction;
+
+    this->_angle = 0.3;
+
     sf::Texture texture;
     if (!texture.loadFromFile("textures/Duck.png"))
     {
@@ -17,8 +19,11 @@ Duck::Duck(int speed,sf::Vector2u screen):sprite(_sprite)
     sprite.setTexture(texture);
     
     sprite.setScale(0.2, 0.2);
-    sprite.setRotation(_angle);
-    sprite.setPosition(sf::Vector2f(10.f, 50.f));
+
+    sprite.setPosition(startPoint);
+
+    this->_sprite = sprite;
+   
 }
 
 Duck::~Duck()
@@ -29,7 +34,14 @@ void Duck::start()
 {
 }
 
-void Duck::update(float delta)
+sf::Sprite Duck::update(float delta)
+{
+    this->_sprite.move(this->_speed * delta, 0.f);
+    return this->_sprite;
+
+}
+
+void Duck::wallCollsion(sf::Vector2f newDirection)
 {
 }
 
@@ -41,7 +53,3 @@ void Duck::flyAway()
 {
 }
 
-bool Duck::collisionCheck()
-{
-	return false;
-}

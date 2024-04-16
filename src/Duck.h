@@ -5,19 +5,17 @@ class Duck
 {
 public:
 	const sf::Sprite& sprite;
-	Duck(int speed,sf::Vector2u screen);
+	Duck(int speed,sf::Vector2f startPoint,sf::Vector2f direction);
 	~Duck();
 	void start();
-	void update(float delta);
+	sf::Sprite update(float delta);
+	void wallCollsion(sf::Vector2f newDirection);
 	void kill();
 	void flyAway();
 
 private:
 	float _angle;
-	sf::Vector2u _screenSize;
-	sf::Vector2i _goal;
+	sf::Vector2f _direction;
 	int _speed;
 	sf::Sprite _sprite;
-
-	bool collisionCheck();
 };

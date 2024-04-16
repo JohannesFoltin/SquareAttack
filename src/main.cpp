@@ -58,6 +58,7 @@ int main(int argc, char* argv[])
 
         crosshairSprite.setPosition(localPosition.x-38,localPosition.y);
         sprite.move(speed * delta, 0.f);
+        sprite.getGlobalBounds().intersects(crosshairSprite.getGlobalBounds());
         window.draw(sprite);
         window.draw(crosshairSprite);
         window.display();
