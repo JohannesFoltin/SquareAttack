@@ -1,12 +1,9 @@
 #include "Duck.h"
-#include <iostream>
 
 Duck::Duck(int speed, sf::Vector2f startPoint, sf::Vector2f direction):sprite(_sprite)
 {
 	this->_speed = speed;
     this->_direction = direction;
-
-    this->_angle = 0.3;
 
     sf::Texture texture;
 
@@ -24,6 +21,10 @@ Duck::Duck(int speed, sf::Vector2f startPoint, sf::Vector2f direction):sprite(_s
     sprite.setPosition(startPoint);
 
     this->_sprite = sprite;
+
+    float angle = sin(direction.y / (sqrt(pow(direction.x, 2) + pow(direction.y, 2))));
+
+    std::cout << angle << "\n";
    
 }
 
