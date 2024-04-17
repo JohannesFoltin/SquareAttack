@@ -14,6 +14,7 @@ public:
 	void flyAway();
 
 private:
+	sf::Texture _texture;
 	float _angle;
 	sf::Vector2f _direction;
 	int _speed;

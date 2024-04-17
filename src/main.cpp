@@ -3,6 +3,7 @@
 #include <windows.h>
 #endif
 #include <iostream>
+#include "Duck.h"
 
 int main(int argc, char* argv[])
 {
@@ -10,9 +11,13 @@ int main(int argc, char* argv[])
     window.setMouseCursorVisible(false);
     window.setFramerateLimit(144);
 
+    sf::View view;
+    view.setCenter(sf::Vector2f(960.f, 540.f));
+    view.setSize(sf::Vector2f(1920.f, 1080.f));
+    window.setView(view);
+
     // Our speed in pixels per second
     float speed = 100.f;
-
     // Our clock to time frames
     sf::Clock clock;
 
@@ -23,17 +28,8 @@ int main(int argc, char* argv[])
     crosshairSprite.setTexture(crosshair);
     crosshairSprite.setScale(0.125, 0.125);
 
-    sf::Texture texture;
-    if (!texture.loadFromFile("textures/Duck.png"))
-    {
-        std::cout << "Error";
-    }
+    Duck duck1(100, sf::Vector2f(0.0f,0.0f),sf::Vector2f(1.0f,1.0f));
 
-    sf::Sprite sprite;
-
-    sprite.setTexture(texture);
-    
-    sprite.setScale(0.2,0.2);
 
     while (window.isOpen())
     {
@@ -52,14 +48,15 @@ int main(int argc, char* argv[])
 
         sf::Vector2i localPosition = sf::Mouse::getPosition(window);
 
+       // std::cout << localPosition.x << "  "<< localPosition.y << "\n";
+
         if (localPosition.x < 0 || localPosition.y < 0)
         {
         }
 
         crosshairSprite.setPosition(localPosition.x-38,localPosition.y);
-        sprite.move(speed * delta, 0.f);
-        sprite.getGlobalBounds().intersects(crosshairSprite.getGlobalBounds());
-        window.draw(sprite);
+        duck1.update(delta);
+        window.draw(duck1.sprite);
         window.draw(crosshairSprite);
         window.display();
     }
