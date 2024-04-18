@@ -8,7 +8,7 @@ class Duck
 {
 public:
 	const sf::Sprite& sprite;
-	Duck(int speed,sf::Vector2f startPoint,sf::Vector2f direction);
+	Duck(int speed,sf::Vector2f startPoint,sf::Vector2f direction,sf::Vector2f dimensions);
 	~Duck();
 	void start();
 	sf::Sprite update(float delta);
@@ -17,6 +17,7 @@ public:
 	void flyAway();
 
 private:
+	sf::Vector2f _dimensions;
 	sf::Texture _texture;
 	float _angle;
 	sf::Vector2f _direction;

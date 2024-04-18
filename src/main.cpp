@@ -5,6 +5,7 @@
 #include <iostream>
 #include "Duck.h"
 
+
 int main(int argc, char* argv[])
 {
     auto window = sf::RenderWindow{ { 1920u, 1080u }, "QuackAttack" };
@@ -28,9 +29,8 @@ int main(int argc, char* argv[])
     crosshairSprite.setTexture(crosshair);
     crosshairSprite.setScale(0.125, 0.125);
 
-    Duck duck1(100, sf::Vector2f(1920.0f,1080.0f),sf::Vector2f(-1.0f,-1.0f));
+    Duck duck1(200, sf::Vector2f(1000.0f,500.0f),sf::Vector2f(-1.0f,-1.0f),sf::Vector2f(1920.f,1080.0f));
 
-    Duck duck2(100, sf::Vector2f(0.0f, 1080.0f), sf::Vector2f(1.0f, -1.0f));
 
     while (window.isOpen())
     {
@@ -57,16 +57,19 @@ int main(int argc, char* argv[])
 
         crosshairSprite.setPosition(localPosition.x-38,localPosition.y);
         duck1.update(delta);
-        duck2.update(delta);
 
-        window.draw(duck2.sprite);
         window.draw(duck1.sprite);
         window.draw(crosshairSprite);
         window.display();
+
+
+
     }
 
     return 0;
 }
+
+
 
 // this is a workaround to make the game run on Windows without a console window
 #ifdef _MSC_VER
