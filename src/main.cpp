@@ -8,7 +8,10 @@
 
 int main(int argc, char* argv[])
 {
-    auto window = sf::RenderWindow{ { 1920u, 1080u }, "Square Shooter" };
+    auto window = sf::RenderWindow{{ 1920u, 1080u }, "Square Shooter",sf::Style::Close | sf::Style::Titlebar };
+
+    window.setSize(sf::Vector2u(1920, 1080));
+
     window.setMouseCursorVisible(false);
     window.setFramerateLimit(144);
 
