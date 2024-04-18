@@ -39,16 +39,33 @@ int main(int argc, char* argv[])
     {
         std::cout << "Error";
     }
-    sf::Text text;
     
     int score = 0;
+    int bulllets = 4;
+
+    sf::Text scoreText;
+    scoreText.setFont(font); 
+    scoreText.setString("Score: " + std::to_string(score));
+    scoreText.setCharacterSize(24);
+    scoreText.setColor(sf::Color(0.0f, 0.0f, 0.0f));
+    scoreText.setPosition(6, 1050);
+
+    sf::Text bulletText;
+    bulletText.setFont(font);
+    bulletText.setString("Bullets left: " + std::to_string(bulllets));
+    bulletText.setCharacterSize(24);
+    bulletText.setColor(sf::Color(0.0f, 0.0f, 0.0f));
+    bulletText.setPosition(150, 1050);
 
 
-    text.setFont(font); 
-    text.setString("Score: " + std::to_string(score));
-    text.setCharacterSize(24);
-    text.setColor(sf::Color(0.0f, 0.0f, 0.0f));
-    text.setPosition(6, 1050);
+    sf::Text stateText;
+    stateText.setFont(font);
+    stateText.setString("Game Over. Press left click to start again.");
+    stateText.setCharacterSize(50);
+    stateText.setFillColor(sf::Color::Red);
+    stateText.setPosition(540.0f, 480.0f);
+
+    bool ingame = false;
 
     while (window.isOpen())
     {
@@ -65,10 +82,29 @@ int main(int argc, char* argv[])
             if (event.type == sf::Event::MouseButtonPressed) {
                 if (event.mouseButton.button == sf::Mouse::Left)
                 {
-                    if (square.sprite.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y)) == 1) {
-                        score = score + 1;
-                        text.setString("Score: " + std::to_string(score));
-                        square.reset();
+                    if (ingame)
+                    {
+                        if (square.sprite.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y)) == 1) {
+                            score = score + 1;
+                            scoreText.setString("Score: " + std::to_string(score));
+                            square.reset();
+                        }
+                        else {
+                            if (bulllets == 1)
+                            {
+                                ingame = false;
+                                square.gameOver();
+                            }
+                            bulllets = bulllets - 1;
+                            bulletText.setString("Bullets left: " + std::to_string(bulllets));
+                        }
+                    }
+                    else {
+                        ingame = true;
+                        bulllets = 4;
+                        score = 0;
+                        bulletText.setString("Bullets left: " + std::to_string(bulllets));
+                        scoreText.setString("Score: " + std::to_string(score));
                     }
                 }
             }
@@ -76,14 +112,22 @@ int main(int argc, char* argv[])
 
         window.clear(sf::Color(250,250,250));
 
-        square.update(delta);
+        if (ingame)
+        {
+            square.update(delta);
+        }
+        else {
+            window.draw(stateText);
+        }
+
         window.draw(square.sprite);
         
         sf::Vector2i localPosition = sf::Mouse::getPosition(window);
         crosshairSprite.setPosition(localPosition.x-31,localPosition.y-2);
         window.draw(crosshairSprite);
 
-        window.draw(text);
+        window.draw(scoreText);
+        window.draw(bulletText);
 
         window.display();
 

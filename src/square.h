@@ -13,6 +13,7 @@ public:
 	~Square();
 	sf::Sprite update(float delta);
 	void reset();
+	void gameOver();
 
 
 private:

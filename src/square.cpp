@@ -102,6 +102,11 @@ void Square::reset()
     this->_speed = this->_speed + 5;
 }
 
+void Square::gameOver()
+{
+    this->_sprite.setPosition(sf::Vector2f(960.0f, 540.0f));
+}
+
 
 sf::Vector2f Square::normelizeVector(sf::Vector2f vector) {
     double vectorLength = sqrt(vector.x * vector.x + vector.y * vector.y);
