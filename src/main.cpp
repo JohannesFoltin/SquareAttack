@@ -8,7 +8,7 @@
 
 int main(int argc, char* argv[])
 {
-    auto window = sf::RenderWindow{ { 1920u, 1080u }, "QuackAttack" };
+    auto window = sf::RenderWindow{ { 1920u, 1080u }, "Square Shooter" };
     window.setMouseCursorVisible(false);
     window.setFramerateLimit(144);
 
@@ -27,10 +27,11 @@ int main(int argc, char* argv[])
     
     sf::Sprite crosshairSprite;
     crosshairSprite.setTexture(crosshair);
-    crosshairSprite.setScale(0.125, 0.125);
+    crosshairSprite.setScale(0.1, 0.1);
 
-    Duck duck1(200, sf::Vector2f(1000.0f,500.0f),sf::Vector2f(-1.0f,-1.0f),sf::Vector2f(1920.f,1080.0f));
+    Square square = Square(200, sf::Vector2f(960.0f,540.0f), sf::Vector2f(1.0f, 1.0f), sf::Vector2f(1920.f, 1080.0f));
 
+    int score = 0;
 
     while (window.isOpen())
     {
@@ -43,31 +44,36 @@ int main(int argc, char* argv[])
             {
                 window.close();
             }
+
+            if (event.type == sf::Event::MouseButtonPressed) {
+                if (event.mouseButton.button == sf::Mouse::Left)
+                {
+                    if (square.sprite.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y)) == 1) {
+                        score = score + 1;
+                        square.reset();
+                    }
+                }
+            }
         }
 
         window.clear(sf::Color(250,250,250));
 
         sf::Vector2i localPosition = sf::Mouse::getPosition(window);
 
-       // std::cout << localPosition.x << "  "<< localPosition.y << "\n";
+        crosshairSprite.setPosition(localPosition.x-31,localPosition.y-2);
 
-        if (localPosition.x < 0 || localPosition.y < 0)
-        {
-        }
+        square.update(delta);
 
-        crosshairSprite.setPosition(localPosition.x-38,localPosition.y);
-        duck1.update(delta);
-
-        window.draw(duck1.sprite);
+        window.draw(square.sprite);
         window.draw(crosshairSprite);
         window.display();
-
-
 
     }
 
     return 0;
 }
+
+
 
 
 
