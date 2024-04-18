@@ -3,7 +3,7 @@
 #include <windows.h>
 #endif
 #include <iostream>
-#include "Duck.h"
+#include "square.h"
 
 
 int main(int argc, char* argv[])
@@ -34,7 +34,21 @@ int main(int argc, char* argv[])
 
     Square square = Square(200, sf::Vector2f(960.0f,540.0f), sf::Vector2f(1.0f, 1.0f), sf::Vector2f(1920.f, 1080.0f));
 
+    sf::Font font;
+    if (!font.loadFromFile("font/comicsans.ttf"))
+    {
+        std::cout << "Error";
+    }
+    sf::Text text;
+    
     int score = 0;
+
+
+    text.setFont(font); 
+    text.setString("Score: " + std::to_string(score));
+    text.setCharacterSize(24);
+    text.setColor(sf::Color(0.0f, 0.0f, 0.0f));
+    text.setPosition(6, 1050);
 
     while (window.isOpen())
     {
@@ -53,6 +67,7 @@ int main(int argc, char* argv[])
                 {
                     if (square.sprite.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y)) == 1) {
                         score = score + 1;
+                        text.setString("Score: " + std::to_string(score));
                         square.reset();
                     }
                 }
@@ -61,23 +76,21 @@ int main(int argc, char* argv[])
 
         window.clear(sf::Color(250,250,250));
 
-        sf::Vector2i localPosition = sf::Mouse::getPosition(window);
-
-        crosshairSprite.setPosition(localPosition.x-31,localPosition.y-2);
-
         square.update(delta);
-
         window.draw(square.sprite);
+        
+        sf::Vector2i localPosition = sf::Mouse::getPosition(window);
+        crosshairSprite.setPosition(localPosition.x-31,localPosition.y-2);
         window.draw(crosshairSprite);
+
+        window.draw(text);
+
         window.display();
 
     }
 
     return 0;
 }
-
-
-
 
 
 // this is a workaround to make the game run on Windows without a console window

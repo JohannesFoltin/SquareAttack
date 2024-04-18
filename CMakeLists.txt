@@ -10,9 +10,10 @@ FetchContent_Declare(SFML
     GIT_TAG 2.6.x)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(QuackAttack src/main.cpp "src/Duck.h" "src/Duck.cpp")
+add_executable(QuackAttack "src/main.cpp" "src/square.h" "src/square.cpp")
 
 file(COPY src/textures DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+file(COPY src/font DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 
 target_link_libraries(QuackAttack PRIVATE sfml-graphics)
 target_compile_features(QuackAttack PRIVATE cxx_std_17)
