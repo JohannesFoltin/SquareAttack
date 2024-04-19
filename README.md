@@ -39,7 +39,10 @@ The game can be run by executing the `SquareShooter.exe` executable in the `buil
 Have a look at the Github Actions Tab ;)
 
 # Used Libarys
+
 - SFML 2.6
+- ([Template for a Cmake SFML Projekt](https://github.com/SFML/cmake-sfml-project))
 
 # Known Issues
+
 - It's an 1902x1080 window, that means i could be to big for some Screens
