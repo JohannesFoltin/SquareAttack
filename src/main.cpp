@@ -99,7 +99,9 @@ int main(int argc, char* argv[])
                             square.reset();
                             square.increaseSpeed(5);
                         }
+                        // The player didnt hit the square :/
                         else {
+                            
                             bullets = bullets - 1;
                             gameStateText.setString(generateGameStateString(score, bullets));
                             if (bullets == 0)
@@ -110,6 +112,7 @@ int main(int argc, char* argv[])
                             }
                         }
                     }
+                    // If the game is not running. Restart it
                     else {
                         ingame = true;
                         bullets = 3;
@@ -118,23 +121,28 @@ int main(int argc, char* argv[])
                     }
             }
         }
-
+        // Makes the Window white
         window.clear(sf::Color(250,250,250));
 
         if (ingame)
         {
+            // Do the calculations for the Frame
             square.update(delta);
         }
         else {
+            // If the game is not running display this text
             window.draw(stateText);
         }
 
+        // Render the square
         window.draw(square.sprite);
-        
+
+        // Move the Crosshair texture to the invisble Mouse
         sf::Vector2i localPosition = sf::Mouse::getPosition(window);
         crosshairSprite.setPosition(localPosition.x-31,localPosition.y-2);
+        //Draw the Crosshair
         window.draw(crosshairSprite);
-
+        // Draw the score etc.
         window.draw(gameStateText);
 
         window.display();

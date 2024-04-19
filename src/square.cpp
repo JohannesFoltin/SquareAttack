@@ -9,9 +9,8 @@ Square::Square(int speed, sf::Vector2f dimensions):sprite(_sprite)
 
     this->_dimensions = dimensions;
 
-    // To initialise a random direction. The Position will be overritten later
-    reset();
 
+    // Load the square Texture
     sf::Texture texture;
 
     if (!texture.loadFromFile("textures/Square.png"))
@@ -24,7 +23,11 @@ Square::Square(int speed, sf::Vector2f dimensions):sprite(_sprite)
     sf::Sprite sprite;
     
     sprite.setTexture(this->_texture);
+    
+    // To initialise a random direction. The Position will be overritten later
+    reset();
 
+    // Set the start Position
     sprite.setPosition(calculateStartPoint());
 
     this->_sprite = sprite;
