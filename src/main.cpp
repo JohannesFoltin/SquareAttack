@@ -5,34 +5,43 @@
 #include <iostream>
 #include "square.h"
 
+// Handles the int to String and returns the result string for the gameStateText
 static std::string generateGameStateString(int score, int bullets) {
     return "Score: " + std::to_string(score) + " " + "Bullets left: " + std::to_string(bullets);
 }
 
 int main(int argc, char* argv[])
 {
+    // Window definition
     auto window = sf::RenderWindow{{ 1920u, 1080u }, "Square Shooter",sf::Style::Close | sf::Style::Titlebar };
 
     window.setSize(sf::Vector2u(1920, 1080));
 
+    //Makes the mousecursor unvisible 
     window.setMouseCursorVisible(false);
     window.setFramerateLimit(144);
 
+    // Gives the Window a coordinate system to work with
     sf::View view;
     view.setCenter(sf::Vector2f(960.f, 540.f));
     view.setSize(sf::Vector2f(1920.f, 1080.f));
     window.setView(view);
 
+    // Init of the Clock to track the delta for movement calculations
     sf::Clock clock;
 
+    // Loading the Crosshair texture
     sf::Texture crosshair;
     crosshair.loadFromFile("textures/Crosshair.png");
     
+    // Init of the Sprite, so the texture can be rendered
     sf::Sprite crosshairSprite;
     crosshairSprite.setTexture(crosshair);
     crosshairSprite.setScale(0.1, 0.1);
 
     const int startSpeed = 150;
+
+    // Init of the Square class
     Square square = Square(startSpeed, sf::Vector2f(1920.f, 1080.0f));
 
     sf::Font font;
@@ -42,10 +51,12 @@ int main(int argc, char* argv[])
     {
         std::cout << "Error";
     }
-    
+
+    // Everything related to the Gamestate
     int score = 0;
     int bullets = 3;
 
+    // Text that displays the current score and the bullets left
     sf::Text gameStateText;
     gameStateText.setFont(font); 
     gameStateText.setString(generateGameStateString(score,bullets));
@@ -53,6 +64,7 @@ int main(int argc, char* argv[])
     gameStateText.setColor(sf::Color(0.0f, 0.0f, 0.0f));
     gameStateText.setPosition(6, 6);
 
+    // Text that is shown when the game is over
     sf::Text stateText;
     stateText.setFont(font);
     stateText.setString("Game Over. Press left click to start again.");
@@ -64,22 +76,26 @@ int main(int argc, char* argv[])
 
     while (window.isOpen())
     {
+        // Delta is used to calculate the distance that the square traveld within one frame
         float delta = clock.restart().asSeconds();
 
+        // Event handling
         for (auto event = sf::Event{}; window.pollEvent(event);)
         {
             if (event.type == sf::Event::Closed)
             {
                 window.close();
             }
-
+            // Checks if the left mouse button is pressed
             if ((event.type == sf::Event::MouseButtonPressed) && (event.mouseButton.button == sf::Mouse::Left)) {
                     if (ingame)
                     {
+                        // Checks if the mousepointer is inside of the Square
                         if (square.sprite.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y)) == 1) {
                             score = score + 1;
                             bullets = 3;
                             gameStateText.setString(generateGameStateString(score,bullets));
+                            // Moves the square to a new Position
                             square.reset();
                             square.increaseSpeed(5);
                         }
