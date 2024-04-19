@@ -6,7 +6,7 @@ Unfortunately, you don't have much ammunition and the square is getting faster a
 So get ready, pick up your mouse and aim for the high score!
 
 
-The game was developed as part of the HWR (Hochschule für Wirtschaft und Recht) C++ course.
+The game was developed as part of the HWR (Hochschule fï¿½r Wirtschaft und Recht) C++ course.
 
 ## How to play
 
@@ -40,3 +40,6 @@ Have a look at the Github Actions Tab ;)
 
 # Used Libarys
 - SFML 2.6
+
+# Known Issues
+- It's an 1902x1080 window, that means i could be to big for some Screens

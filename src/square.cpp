@@ -43,8 +43,10 @@ sf::Sprite Square::update(float delta)
     sf::Vector2f spritePosition = this->_sprite.getPosition();
     sf::Vector2f dimensions = this->_dimensions;
 
+    // Collision handling with the x Wall
     if (spritePosition.x < 0 || (spritePosition.x+this->_texture.getSize().x)> dimensions.x) {
 
+        // Angle calculation
         double normalX = 0.0; 
         double normalY = (spritePosition.x < 0) ? 1.0 : -1.0;
 
@@ -60,8 +62,10 @@ sf::Sprite Square::update(float delta)
         
     }
 
+    // Collision handling with the y Wall
     if (spritePosition.y < 0 || (spritePosition.y + this->_texture.getSize().y) > dimensions.y) {
 
+        // Angle calculation
         double normalX = (spritePosition.y < 0) ? 1.0 : -1.0; 
         double normalY = 0.0; 
 
@@ -77,10 +81,12 @@ sf::Sprite Square::update(float delta)
         
     }
 
+    // Move the Sprite in the right direction and the right distance
     this->_sprite.move(this->_speed * delta* _direction.x, this->_speed * delta * _direction.y);
     return this->_sprite;
 }
 
+// Generate a random direction and position
 void Square::reset()
 {
     std::random_device rd;
@@ -109,10 +115,11 @@ void Square::resetSpeed(int newValue)
 
 void Square::gameOver()
 {
+    // Reset the Sprite to the center
     this->_sprite.setPosition(calculateStartPoint());
 }
 
-
+// calculate the center of the screen
 sf::Vector2f Square::calculateStartPoint()
 {
     float startPointX = (this->_dimensions.x / 2) - this->_texture.getSize().x;
@@ -121,6 +128,7 @@ sf::Vector2f Square::calculateStartPoint()
     return sf::Vector2f(startPointX, startPointY);
 }
 
+// Normelize a vector
 sf::Vector2f Square::normelizeVector(sf::Vector2f vector) {
     double vectorLength = sqrt(vector.x * vector.x + vector.y * vector.y);
     return sf::Vector2f(vector.x / vectorLength, vector.y / vectorLength);
