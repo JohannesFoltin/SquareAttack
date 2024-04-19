@@ -2,6 +2,7 @@
 
 # define M_PI           3.14159265358979323846  /* pi */
 
+// Implementaion of the Square Class
 Square::Square(int speed, sf::Vector2f dimensions):sprite(_sprite)
 {
 	this->_speed = speed;
@@ -17,6 +18,7 @@ Square::Square(int speed, sf::Vector2f dimensions):sprite(_sprite)
     {
         std::cout << "Error";
     }
+
     this->_texture = texture;
 
     sf::Sprite sprite;
@@ -40,18 +42,14 @@ sf::Sprite Square::update(float delta)
 
     if (spritePosition.x < 0 || (spritePosition.x+this->_texture.getSize().x)> dimensions.x) {
 
-        // Kollisionsbehandlung für X-Richtung: Abprallen von der Wand
         double normalX = 0.0; 
         double normalY = (spritePosition.x < 0) ? 1.0 : -1.0;
 
-        // Berechne den Winkel zwischen dem aktuellen Richtungsvektor und der Normalen
         double angle = atan2(normalY, normalX);
         double incidentAngle = atan2(this->_direction.y, this->_direction.x);
 
-        // Berechne den reflektierten Winkel (Einfallswinkel = Ausfallswinkel)
         double reflectedAngle = 2 * angle - incidentAngle;
 
-        // Berechne den neuen Richtungsvektor basierend auf dem reflektierten Winkel
         this->_direction.x = cos(reflectedAngle);
         this->_direction.y = sin(reflectedAngle);
 
@@ -60,18 +58,15 @@ sf::Sprite Square::update(float delta)
     }
 
     if (spritePosition.y < 0 || (spritePosition.y + this->_texture.getSize().y) > dimensions.y) {
-        // Kollisionsbehandlung für Y-Richtung: Umkehren der Richtung
+
         double normalX = (spritePosition.y < 0) ? 1.0 : -1.0; 
         double normalY = 0.0; 
 
-        // Berechne den Winkel zwischen dem aktuellen Richtungsvektor und der Normalen
         double angle = atan2(normalY, normalX);
         double incidentAngle = atan2(this->_direction.y, this->_direction.x);
 
-        // Berechne den reflektierten Winkel (Einfallswinkel = Ausfallswinkel)
         double reflectedAngle = 2 * angle - incidentAngle;
 
-        // Berechne den neuen Richtungsvektor basierend auf dem reflektierten Winkel
         this->_direction.x = cos(reflectedAngle);
         this->_direction.y = sin(reflectedAngle);
 

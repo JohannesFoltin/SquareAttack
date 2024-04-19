@@ -4,7 +4,7 @@
 #include <random>
 
 
-
+// Definition of the Square Class
 class Square
 {
 public:
@@ -19,11 +19,11 @@ public:
 
 
 private:
-	sf::Vector2f calculateStartPoint();
-	sf::Vector2f normelizeVector(sf::Vector2f vector);
 	sf::Vector2f _dimensions;
 	sf::Texture _texture;
 	sf::Vector2f _direction;
 	int _speed;
 	sf::Sprite _sprite;
+	sf::Vector2f calculateStartPoint();
+	sf::Vector2f normelizeVector(sf::Vector2f vector);
 };

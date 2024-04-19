@@ -5,7 +5,7 @@
 #include <iostream>
 #include "square.h"
 
-std::string generateGameStateString(int score, int bullets) {
+static std::string generateGameStateString(int score, int bullets) {
     return "Score: " + std::to_string(score) + " " + "Bullets left: " + std::to_string(bullets);
 }
 
@@ -23,9 +23,6 @@ int main(int argc, char* argv[])
     view.setSize(sf::Vector2f(1920.f, 1080.f));
     window.setView(view);
 
-    // Our speed in pixels per second
-    float speed = 100.f;
-    // Our clock to time frames
     sf::Clock clock;
 
     sf::Texture crosshair;
@@ -39,6 +36,8 @@ int main(int argc, char* argv[])
     Square square = Square(startSpeed, sf::Vector2f(1920.f, 1080.0f));
 
     sf::Font font;
+
+    //The one and only font :)
     if (!font.loadFromFile("font/comicsans.ttf"))
     {
         std::cout << "Error";
@@ -52,7 +51,7 @@ int main(int argc, char* argv[])
     gameStateText.setString(generateGameStateString(score,bullets));
     gameStateText.setCharacterSize(24);
     gameStateText.setColor(sf::Color(0.0f, 0.0f, 0.0f));
-    gameStateText.setPosition(6, 1050);
+    gameStateText.setPosition(6, 6);
 
     sf::Text stateText;
     stateText.setFont(font);
@@ -67,7 +66,6 @@ int main(int argc, char* argv[])
     {
         float delta = clock.restart().asSeconds();
 
-
         for (auto event = sf::Event{}; window.pollEvent(event);)
         {
             if (event.type == sf::Event::Closed)
@@ -75,9 +73,7 @@ int main(int argc, char* argv[])
                 window.close();
             }
 
-            if (event.type == sf::Event::MouseButtonPressed) {
-                if (event.mouseButton.button == sf::Mouse::Left)
-                {
+            if ((event.type == sf::Event::MouseButtonPressed) && (event.mouseButton.button == sf::Mouse::Left)) {
                     if (ingame)
                     {
                         if (square.sprite.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y)) == 1) {
@@ -88,14 +84,14 @@ int main(int argc, char* argv[])
                             square.increaseSpeed(5);
                         }
                         else {
-                            if (bullets == 1)
+                            bullets = bullets - 1;
+                            gameStateText.setString(generateGameStateString(score, bullets));
+                            if (bullets == 0)
                             {
                                 ingame = false;
                                 square.resetSpeed(startSpeed);
                                 square.gameOver();
                             }
-                            bullets = bullets - 1;
-                            gameStateText.setString(generateGameStateString(score, bullets));
                         }
                     }
                     else {
@@ -104,7 +100,6 @@ int main(int argc, char* argv[])
                         score = 0;
                         gameStateText.setString(generateGameStateString(score, bullets));
                     }
-                }
             }
         }
 

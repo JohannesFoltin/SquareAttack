@@ -26,10 +26,10 @@ if(WIN32)
         VERBATIM)
 endif()
 
-#if(MSVC)
-#    set_target_properties(SquareShooter PROPERTIES
-#            WIN32_EXECUTABLE YES
-#    )
-#endif()
+if(MSVC)
+    set_target_properties(SquareShooter PROPERTIES
+            WIN32_EXECUTABLE YES
+    )
+endif()
 
 install(TARGETS SquareShooter)
