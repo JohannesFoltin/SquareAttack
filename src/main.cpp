@@ -5,6 +5,9 @@
 #include <iostream>
 #include "square.h"
 
+std::string generateGameStateString(int score, int bullets) {
+    return "Score: " + std::to_string(score) + " " + "Bullets left: " + std::to_string(bullets);
+}
 
 int main(int argc, char* argv[])
 {
@@ -32,7 +35,7 @@ int main(int argc, char* argv[])
     crosshairSprite.setTexture(crosshair);
     crosshairSprite.setScale(0.1, 0.1);
 
-    Square square = Square(200, sf::Vector2f(960.0f,540.0f), sf::Vector2f(1.0f, 1.0f), sf::Vector2f(1920.f, 1080.0f));
+    Square square = Square(200, sf::Vector2f(1920.f, 1080.0f));
 
     sf::Font font;
     if (!font.loadFromFile("font/comicsans.ttf"))
@@ -41,22 +44,14 @@ int main(int argc, char* argv[])
     }
     
     int score = 0;
-    int bulllets = 4;
+    int bullets = 3;
 
-    sf::Text scoreText;
-    scoreText.setFont(font); 
-    scoreText.setString("Score: " + std::to_string(score));
-    scoreText.setCharacterSize(24);
-    scoreText.setColor(sf::Color(0.0f, 0.0f, 0.0f));
-    scoreText.setPosition(6, 1050);
-
-    sf::Text bulletText;
-    bulletText.setFont(font);
-    bulletText.setString("Bullets left: " + std::to_string(bulllets));
-    bulletText.setCharacterSize(24);
-    bulletText.setColor(sf::Color(0.0f, 0.0f, 0.0f));
-    bulletText.setPosition(150, 1050);
-
+    sf::Text gameStateText;
+    gameStateText.setFont(font); 
+    gameStateText.setString(generateGameStateString(score,bullets));
+    gameStateText.setCharacterSize(24);
+    gameStateText.setColor(sf::Color(0.0f, 0.0f, 0.0f));
+    gameStateText.setPosition(6, 1050);
 
     sf::Text stateText;
     stateText.setFont(font);
@@ -65,7 +60,7 @@ int main(int argc, char* argv[])
     stateText.setFillColor(sf::Color::Red);
     stateText.setPosition(540.0f, 480.0f);
 
-    bool ingame = false;
+    bool ingame = true;
 
     while (window.isOpen())
     {
@@ -86,25 +81,27 @@ int main(int argc, char* argv[])
                     {
                         if (square.sprite.getGlobalBounds().contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y)) == 1) {
                             score = score + 1;
-                            scoreText.setString("Score: " + std::to_string(score));
+                            bullets = 3;
+                            gameStateText.setString(generateGameStateString(score,bullets));
                             square.reset();
+                            square.increaseSpeed(5);
                         }
                         else {
-                            if (bulllets == 1)
+                            if (bullets == 1)
                             {
                                 ingame = false;
+                                square.resetSpeed(100);
                                 square.gameOver();
                             }
-                            bulllets = bulllets - 1;
-                            bulletText.setString("Bullets left: " + std::to_string(bulllets));
+                            bullets = bullets - 1;
+                            gameStateText.setString(generateGameStateString(score, bullets));
                         }
                     }
                     else {
                         ingame = true;
-                        bulllets = 4;
+                        bullets = 3;
                         score = 0;
-                        bulletText.setString("Bullets left: " + std::to_string(bulllets));
-                        scoreText.setString("Score: " + std::to_string(score));
+                        gameStateText.setString(generateGameStateString(score, bullets));
                     }
                 }
             }
@@ -126,8 +123,7 @@ int main(int argc, char* argv[])
         crosshairSprite.setPosition(localPosition.x-31,localPosition.y-2);
         window.draw(crosshairSprite);
 
-        window.draw(scoreText);
-        window.draw(bulletText);
+        window.draw(gameStateText);
 
         window.display();
 

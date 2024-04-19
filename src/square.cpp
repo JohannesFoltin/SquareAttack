@@ -2,12 +2,14 @@
 
 # define M_PI           3.14159265358979323846  /* pi */
 
-Square::Square(int speed, sf::Vector2f startPoint, sf::Vector2f direction, sf::Vector2f dimensions):sprite(_sprite)
+Square::Square(int speed, sf::Vector2f dimensions):sprite(_sprite)
 {
 	this->_speed = speed;
+
     this->_dimensions = dimensions;
 
-    this->_direction = normelizeVector(direction);
+    // To initialise a random direction. The Position will be overritten later
+    reset();
 
     sf::Texture texture;
 
@@ -21,9 +23,7 @@ Square::Square(int speed, sf::Vector2f startPoint, sf::Vector2f direction, sf::V
     
     sprite.setTexture(this->_texture);
 
-
-    sprite.setPosition(startPoint);
-
+    sprite.setPosition(calculateStartPoint());
 
     this->_sprite = sprite;
    
@@ -85,7 +85,6 @@ sf::Sprite Square::update(float delta)
 
 void Square::reset()
 {
-
     std::random_device rd;
     std::mt19937 gen(rd());
 
@@ -98,15 +97,31 @@ void Square::reset()
     std::uniform_int_distribution<int> distributionYd(-100, 100);
 
     this->_direction = normelizeVector(sf::Vector2f(distributionXd(gen), distributionYd(gen)));
+}
 
-    this->_speed = this->_speed + 5;
+void Square::increaseSpeed(int value)
+{
+    this->_speed = this->_speed + value;
+}
+
+void Square::resetSpeed(int newValue)
+{
+    this->_speed = newValue;
 }
 
 void Square::gameOver()
 {
-    this->_sprite.setPosition(sf::Vector2f(960.0f, 540.0f));
+    this->_sprite.setPosition(calculateStartPoint());
 }
 
+
+sf::Vector2f Square::calculateStartPoint()
+{
+    float startPointX = (this->_dimensions.x / 2) - this->_texture.getSize().x;
+    float startPointY = (this->_dimensions.y / 2) - this->_texture.getSize().y;
+
+    return sf::Vector2f(startPointX, startPointY);
+}
 
 sf::Vector2f Square::normelizeVector(sf::Vector2f vector) {
     double vectorLength = sqrt(vector.x * vector.x + vector.y * vector.y);
