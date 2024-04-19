@@ -35,7 +35,8 @@ int main(int argc, char* argv[])
     crosshairSprite.setTexture(crosshair);
     crosshairSprite.setScale(0.1, 0.1);
 
-    Square square = Square(200, sf::Vector2f(1920.f, 1080.0f));
+    const int startSpeed = 150;
+    Square square = Square(startSpeed, sf::Vector2f(1920.f, 1080.0f));
 
     sf::Font font;
     if (!font.loadFromFile("font/comicsans.ttf"))
@@ -58,7 +59,7 @@ int main(int argc, char* argv[])
     stateText.setString("Game Over. Press left click to start again.");
     stateText.setCharacterSize(50);
     stateText.setFillColor(sf::Color::Red);
-    stateText.setPosition(540.0f, 480.0f);
+    stateText.setPosition(540.0f, 380.0f);
 
     bool ingame = true;
 
@@ -90,7 +91,7 @@ int main(int argc, char* argv[])
                             if (bullets == 1)
                             {
                                 ingame = false;
-                                square.resetSpeed(100);
+                                square.resetSpeed(startSpeed);
                                 square.gameOver();
                             }
                             bullets = bullets - 1;
